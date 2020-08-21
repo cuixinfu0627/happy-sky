@@ -16,13 +16,13 @@ import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
- * @name: RedisConfig <tb>
- * @title: Redis配置  <tb>
- * @author: cuixinfu@51play.com <tb>
- * @date: 2020/7/2 9:06<tb>
+ * Redis配置
+ *
+ * @author Mark sunlightcs@gmail.com
  */
 @Configuration
-public class RedisConnectionConfig {
+public class RedisConfig {
+
     @Autowired
     private RedisConnectionFactory factory;
 

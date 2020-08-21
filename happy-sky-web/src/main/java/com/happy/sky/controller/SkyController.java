@@ -23,8 +23,8 @@ public class SkyController {
 	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
-		ModelAndView mv = new ModelAndView("forward:/welcome.json");//默认为forward模式
-		//ModelAndView mv = new ModelAndView("redirect:/#/welcome.json");//redirect模式
+		ModelAndView mv = new ModelAndView("forward:/sky/welcome.json");//默认为forward模式
+		//ModelAndView mv = new ModelAndView("redirect:/#/sky/welcome.json");//redirect模式
 		return mv; 
 	} 
 	
