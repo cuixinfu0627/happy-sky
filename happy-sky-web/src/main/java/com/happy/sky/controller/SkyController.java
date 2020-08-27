@@ -1,13 +1,12 @@
 package com.happy.sky.controller;
 
 import com.happy.sky.common.utils.JSONHandler;
+import com.happy.sky.entity.User;
 import com.happy.sky.view.R;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,4 +35,36 @@ public class SkyController {
 		String result = JSONHandler.objectToJson(map);
     	return R.ok().put("result", result);
     }
+
+	@GetMapping("/getUser")
+	public R getUser(@RequestParam(value = "userId") Long userId,
+					 @RequestParam(value = "username") String username,
+					 @RequestParam(value = "nickname") String nickname,
+					 @RequestParam(value = "email") String email,
+					 @RequestParam(value = "mobile") String mobile) throws Exception {
+		User user = new User();
+		user.setUserId(userId);
+		user.setUsername(username);
+		user.setNickname(nickname);
+		user.setEmail(email);
+		user.setMobile(mobile);
+		return R.ok().put("user",user);
+	}
+
+	@PostMapping("/saveUser")
+	public R saveUser(@RequestParam(value = "userId") Long userId,
+					  @RequestParam(value = "username") String username,
+					  @RequestParam(value = "nickname") String nickname,
+					  @RequestParam(value = "email") String email,
+					  @RequestParam(value = "mobile") String mobile) throws Exception {
+		User user = new User();
+		user.setUserId(userId);
+		user.setUsername(username);
+		user.setNickname(nickname);
+		user.setEmail(email);
+		user.setMobile(mobile);
+		return R.ok().put("user",user);
+	}
+
+
 }

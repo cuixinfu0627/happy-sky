@@ -26,9 +26,9 @@ public class Receiver implements MessageListener {
         String content = message.toString();
         Map<String,Object> params = JSONObject.parseObject(content);
         Integer number = (Integer) params.get("number");
-        String updateSql = "update goods_info set stock = stock - " + number +",version = version + 1 where id = " + params.get("id") + " and stock > 0" ;
+        String updateSql = "update goods set stock = stock - " + number +",version = version + 1 where id = " + params.get("id") + " and stock > 0" ;
         int result = jdbcTemplate.update(updateSql);
-        System.out.println("update goods_info set stock = stock - " + number +",version = version + 1 where id = " + params.get("id") + "and stock > 0");
+        System.out.println("update goods set stock = stock - " + number +",version = version + 1 where id = " + params.get("id") + " and stock > 0");
         if (result > 0){
             System.out.println("Revicer 秒杀成功： " + number);
             // todo 执行业务订单创建

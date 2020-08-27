@@ -2,7 +2,10 @@ package com.happy.sky.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.dtflys.forest.config.ForestConfiguration;
+import com.happy.sky.common.utils.JSONHandler;
 import com.happy.sky.forest.FireForestClient;
+import com.happy.sky.forest.request.params.FireInspection;
+import com.happy.sky.forest.request.params.FireInspectionNodes;
 import com.happy.sky.service.ForestClientService;
 import com.happy.sky.view.R;
 import com.happy.sky.view.ResultVoWrapper;
@@ -15,10 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @name: ForestClientController <tb>
@@ -57,8 +57,8 @@ public class ForestClientController {
     public Object hello() {
         String appSecret = "132456789";
         String url = "http://127.0.0.1:8080:/forest/list";
-        Map<String,Object> data = new HashMap<>();
-        data.put("time",System.currentTimeMillis());
+        Map<String, Object> data = new HashMap<>();
+        data.put("time", System.currentTimeMillis());
         String body = JSON.toJSONString(data);
         String sign = DigestUtils.md5DigestAsHex(("POST" + url + body + appSecret).getBytes());
         return fireForestClient.queryFireList(url, sign, body);
@@ -70,33 +70,34 @@ public class ForestClientController {
      */
     @PostMapping(value = "list")
     public Object list(HttpServletRequest request,
-                         @RequestParam("sign") String sign,
-                         @RequestBody String data) {
+                       @RequestParam("sign") String sign,
+                       @RequestBody String data) {
 
         //获取配置信息
         Map<String, Object> variables = config0.getVariables();
         String forestVariables = JSON.toJSONString(variables);
-        logger.info("get forest config info :{}",forestVariables);
+        logger.info("get forest config info :{}", forestVariables);
 
         String appSecret = "9c1fe55af3b3444991a51f23d6775693";
         String url = request.getRequestURL().toString();
 
         String signature = DigestUtils.md5DigestAsHex(("POST" + url + data + appSecret).getBytes());
-        logger.info("upload platform get the md5 signature result :{}",signature);
-        if (!signature.equals(sign)){
+        logger.info("upload platform get the md5 signature result :{}", signature);
+        if (!signature.equals(sign)) {
             return ResultVoWrapper.buildFail();
         }
         List<Object> unitList = new ArrayList<>();
-        Unit  unit1 = new Unit(1L, "单位一");
-        Unit  unit2 = new Unit(2L, "单位二");
-        Unit  unit3 = new Unit(3L, "单位三");
+        Unit unit1 = new Unit(1L, "单位一");
+        Unit unit2 = new Unit(2L, "单位二");
+        Unit unit3 = new Unit(3L, "单位三");
         unitList.add(unit1);
         unitList.add(unit2);
         unitList.add(unit3);
         return ResultVoWrapper.buildSuccess(unitList);
     }
+
     @Data
-    class Unit{
+    class Unit {
         private Long id;
         private String name;
 
@@ -106,4 +107,224 @@ public class ForestClientController {
         }
     }
 
+    /**
+     * @title: 单位列表 <tb>
+     * @params: projectId  <tb
+     */
+    @GetMapping(value = "queryUnitList")
+    public Object queryUnitList() {
+        String url = "http://api.fc-shaodong.zhxf.ltd/unit/queryPagerUnitList?currentPage=1&likeName=&pageSize=16";
+        return fireForestClient.queryUnitList(url);
+    }
+
+    /**
+     * @title: 添加设备 <tb>
+     * @params: projectId  <tb
+     */
+    @GetMapping(value = "addDevice")
+    public R addDevice(@RequestParam(value = "prefix") String prefix,
+                       @RequestParam(value = "max") Integer max) {
+        String base = "http://api.fc-shaodong.zhxf.ltd";
+        for (int i = 1; i < 5; i++) {
+            String name = "燃气感应0" + i;
+            String unitId = "1";
+            String unitName = "管理单位";
+            String buildingId = "0";
+            String buildingName = "室外";
+            String floorId = "";
+            String floorNumber = "";
+            String roomId = "";
+            String roomNumber = "";
+            String deviceTypeId = "1";
+            String deviceTypeName = "燃气感应";
+            String pointX = "116.3610202562" + getRandomNumber(4); //随机后4位
+            String pointY = "40.07020874293" + getRandomNumber(4); //随机后4位
+            String xRate = "";
+            String mac = "jsca-" + System.currentTimeMillis() + "-" + getCharBaseStr() + "-" + getRandomString(13); //随机后8位
+            String startDate = "2020-08-27";
+            String height = "";
+            String fheight = "";
+            String lifeMonth = "1000";
+            String firm = "泛海三江";
+            String productDate = "2020-08-27";
+            String maintenanceUnit = "钜升畅安";
+            String maintenanceUser = "秦永浩";
+            String maintenancePhone = "15010089119";
+            String controllerId = "0";
+            String modelCode = "";
+            String deviceUrl = "";
+
+//            String params = "name=" + name
+//                    + "&unitId=" + unitId + "&unitName=" + unitName
+//                    + "&buildingId=" + buildingId + "&buildingName=" + buildingName
+//                    + "&floorId=" + floorId + "&floorNumber=" + floorNumber
+//                    + "&roomId=" + roomId + "&roomNumber=" + roomNumber
+//                    + "&deviceTypeId=" + deviceTypeId + "&deviceTypeName=" + deviceTypeName + "&mac=" + mac
+//                    + "&pointX=" + pointX + "&pointY=" + pointY + "&xRate=" + xRate
+//                    + "&mac=" + mac + "&startDate=" + startDate
+//                    + "&height=" + height + "&fheight=" + fheight
+//                    + "&lifeMonth=" + lifeMonth + "&firm=" + firm
+//                    + "&productDate=" + productDate + "&maintenanceUnit=" + maintenanceUnit
+//                    + "&maintenanceUser=" + maintenanceUser + "&maintenancePhone=" + maintenancePhone
+//                    + "&controllerId=" + controllerId + "&modelCode=" + modelCode + "&deviceUrl=" + deviceUrl;
+//            Object obj = fireForestClient.fireAddDeviceBak(base, params);
+
+            Object obj = fireForestClient.fireAddDevice(base, name, unitId, unitName, buildingId, buildingName, floorId, floorNumber, roomId, roomNumber,
+                    deviceTypeId, deviceTypeName, pointX, pointY, xRate, mac, startDate, height, fheight, lifeMonth, firm, productDate,
+                    maintenanceUnit, maintenanceUser, maintenancePhone, controllerId, modelCode, deviceUrl);
+            String result = JSONHandler.getGson().toJson(obj);
+            logger.info("添加设备返回结果：{}", result);
+        }
+        return R.ok("this is ok!");
+    }
+
+    /**
+     * @title: 添加巡检路线 <tb>
+     * @params: projectId  <tb
+     */
+    @GetMapping(value = "addInspection")
+    public R addInspection(@RequestParam(value = "prefix") String prefix,
+                           @RequestParam(value = "max") Integer max) {
+        String url = "http://api.fc-shaodong.zhxf.ltd/admin/inspection/insertInspectionPlan";
+        for (int i = 1; i < 5; i++) {
+            //组装数据
+            FireInspection inspection = new FireInspection();
+            inspection.setName("智慧路线00" + i);    //路线随机
+            inspection.setType(2);
+            inspection.setUnitId(1L);
+            inspection.setUnitName("管理单位");
+            List<FireInspectionNodes> listInspectionNodes = new ArrayList<>();
+            for (int j = 0; j < 4; j++) {
+                FireInspectionNodes ispectionNodes = new FireInspectionNodes();
+                ispectionNodes.setSorting(j);
+                ispectionNodes.setBuildingId(0L);
+                ispectionNodes.setBuildingName("室外");
+                ispectionNodes.setFloorId(0L);
+                ispectionNodes.setFloorNumber("");
+                ispectionNodes.setRoomId(0L);
+                ispectionNodes.setRoomNumber("");
+                ispectionNodes.setDeviceId(0L);
+                ispectionNodes.setDeviceName("");
+                listInspectionNodes.add(ispectionNodes);
+            }
+            inspection.setInspectionNodes(listInspectionNodes);
+            //执行插入操作
+            Object obj = fireForestClient.fireAddInspection(url, inspection);
+            String result = JSONHandler.getGson().toJson(obj);
+            logger.info("添加巡检路线返回结果：{}", result);
+        }
+        return R.ok("this is ok!");
+    }
+
+    /**
+     * @title: 添加上传隐患 <tb>
+     * @params: projectId  <tb
+     */
+    @GetMapping(value = "addTrouble")
+    public R addTrouble(@RequestParam(value = "prefix") String prefix,
+                        @RequestParam(value = "max") Integer max) {
+        String base = "http://api.fc-shaodong.zhxf.ltd";
+        for (int i = 1; i < 5; i++) {
+            Integer type = getRandomNumber(4, 1);  //随机类型1-4
+            Integer levels = getRandomNumber(3, 1); //随机级别1-3
+            String dangerName = "";
+            String unitId = "1";
+            String unitName = "管理单位";
+            String buildingId = "0";
+            String buildingName = "室外";
+            String floorId = "";
+            String floorNumber = "";
+            String roomId = "";
+            String roomNumber = "";
+            String pointX = "116.3610202562" + getRandomNumber(4); //随机后4位
+            String pointY = "40.07020874293" + getRandomNumber(4); //随机后4位
+            String xRate = "0";
+            String yRate = "0";
+            String cont = "发现隐患-测试00" + i;
+            String gridId = "";
+
+//            String params = "type=" + type + "&levels=" + levels + "&dangerName=" + dangerName
+//                    + "&unitId=" + unitId + "&unitName=" + unitName
+//                    + "&buildingId=" + buildingId + "&buildingName=" + buildingName
+//                    + "&floorId=" + floorId + "&floorNumber=" + floorNumber
+//                    + "&roomId=" + roomId + "&roomNumber=" + roomNumber
+//                    + "&pointX=" + pointX + "&pointY=" + pointY + "&xRate=" + xRate + "&yRate=" + yRate
+//                    + "&cont=" + cont + "&gridId=" + gridId;
+//            Object obj = fireForestClient.fireAddTroubleBak(url, params);
+
+            Object obj = fireForestClient.fireAddTrouble(base, type, levels, dangerName,
+                    unitId, unitName, buildingId, buildingName, floorId, floorNumber, roomId, roomNumber,
+                    pointX, pointY, xRate, yRate, cont, gridId);
+
+            String result = JSONHandler.getGson().toJson(obj);
+            logger.info("添加隐患返回结果：{}", result);
+        }
+        return R.ok("this is ok!");
+    }
+
+    private static String charBaseStr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    /**
+     * 随机字符串
+     *
+     * @param length 长度
+     * @return
+     */
+    public static String getRandomString(int length) { //length表示生成字符串的长度
+        Random random = new Random();
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < length; i++) {
+            int number = random.nextInt(charBaseStr.length());
+            sb.append(charBaseStr.charAt(number));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 随机数值 指定范围大小
+     *
+     * @return
+     */
+    public static int getRandomNumber(int max, int min) {
+        Random random = new Random();
+        int s = random.nextInt(max) % (max - min + 1) + min;
+        return s;
+    }
+
+    /**
+     * 产生N位的随机数字
+     *
+     * @return
+     */
+    public static String getRandomNumber(int n) {
+        Random rad = new Random();
+        String result = rad.nextInt(1000000) + "";
+        if (result.length() != n) {
+            return getRandomNumber(n);
+        }
+        return result;
+    }
+
+    /**
+     * 此方法描述的是：  随机生成4位随机验证码
+     *
+     * @return String
+     */
+    public static String getCharBaseStr() {
+        String vcode = "";
+        for (int i = 0; i < 4; i++) {
+            vcode = vcode + (int) (Math.random() * 9);
+        }
+        return vcode;
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println("ForestClientController.main");
+        System.out.println(System.currentTimeMillis());
+        System.out.println(getRandomString(14));
+        for (int i = 0; i < 5; i++) {
+            System.out.println("随机数字1-4:" + getRandomNumber(4, 1));
+        }
+    }
 }

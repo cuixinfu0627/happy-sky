@@ -4,6 +4,8 @@ import com.dtflys.forest.annotation.DataObject;
 import com.dtflys.forest.annotation.DataParam;
 import com.dtflys.forest.annotation.DataVariable;
 import com.dtflys.forest.annotation.Request;
+import com.happy.sky.forest.request.params.FireDevice;
+import com.happy.sky.forest.request.params.FireInspection;
 
 import java.util.Map;
 
@@ -57,11 +59,11 @@ public interface FireForestClient {
     Map savaOrUpdateDevice(
             @DataVariable("base") String base,
             @DataVariable("sign") String sign,
-            @DataObject FireDeviceParam fireDeviceParam
+            @DataObject FireDevice fireDevice
     );
 
     /**
-     * @title:  删除设备 <tb>
+     * @title: 删除设备 <tb>
      * @params: base  url地址<tb>
      * @params: sign  签名<tb>
      * @params: data  body<tb>
@@ -83,4 +85,149 @@ public interface FireForestClient {
             @DataParam("data") String data
     );
 
+
+    @Request(
+            url = "${base}",
+            type = "get",
+            headers = {
+                    "Accept-Charset: utf-8",
+                    "Content-Type: application/json",
+                    "Cookie: ticket=0e52e10b7841430fb6d085832ce0f69a"
+            }
+    )
+    Object queryUnitList(
+            @DataVariable("base") String base
+    );
+
+    /** =========================== ===========================消防平台添加设备=========================== ===========================**/
+    @Request(
+            url = "${base}/device/addDevice?${params}",
+            type = "get",
+            headers = {
+                    "Accept-Charset: utf-8",
+                    "Cookie: ticket=0e52e10b7841430fb6d085832ce0f69a"
+            }
+    )
+    Object fireAddDeviceBak(
+            @DataVariable("base") String base,
+            @DataParam("params") String params //@DataVariable("params") String param
+    );
+
+    @Request(
+            url = "${base}/device/addDevice?name=${name}&unitId=${unitId}&unitName=${unitName}&buildingId=${buildingId}&buildingName=${buildingName}" +
+                    "&floorId=${floorId}&floorNumber=${floorNumber}&roomId=${roomId}&roomNumber=${roomNumber}&deviceTypeId=${deviceTypeId}&deviceTypeName=${deviceTypeName}" +
+                    "&pointX=${pointX}&pointY=${pointY}&xRate=${xRate}" +
+                    "&mac=${mac}&startDate=${startDate}&height=${height}&fheight=${fheight}&lifeMonth=${lifeMonth}&firm=${firm}&productDate=${productDate}" +
+                    "&maintenanceUnit=${maintenanceUnit}&maintenanceUser=${maintenanceUser}&maintenancePhone=${maintenancePhone}&controllerId=${controllerId}" +
+                    "&modelCode=${modelCode}&deviceUrl=${deviceUrl}",
+
+            type = "get",
+            headers = {
+                    "Accept-Charset: utf-8",
+                    "Cookie: ticket=0e52e10b7841430fb6d085832ce0f69a"
+            },
+            dataType = "json"
+    )
+    Object fireAddDevice(
+            @DataVariable("base") String base,
+            @DataVariable("name") String name,
+            @DataVariable("unitId") String unitId,
+            @DataVariable("unitName") String unitName,
+            @DataVariable("buildingId") String buildingId,
+            @DataVariable("buildingName") String buildingName,
+            @DataVariable("floorId") String floorId,
+            @DataVariable("floorNumber") String floorNumber,
+            @DataVariable("roomId") String roomId,
+            @DataVariable("roomNumber") String roomNumber,
+            @DataVariable("deviceTypeId") String deviceTypeId,
+            @DataVariable("deviceTypeName") String deviceTypeName,
+            @DataVariable("pointX") String pointX,
+            @DataVariable("pointY") String pointY,
+            @DataVariable("xRate") String xRate,
+            @DataVariable("mac") String mac,
+            @DataVariable("startDate") String startDate,
+            @DataVariable("height") String height,
+            @DataVariable("fheight") String fheight,
+            @DataVariable("lifeMonth") String lifeMonth,
+            @DataVariable("firm") String firm,
+            @DataVariable("productDate") String productDate,
+            @DataVariable("maintenanceUnit") String maintenanceUnit,
+            @DataVariable("maintenanceUser") String maintenanceUser,
+            @DataVariable("maintenancePhone") String maintenancePhone,
+            @DataVariable("controllerId") String controllerId,
+            @DataVariable("modelCode") String modelCode,
+            @DataVariable("deviceUrl") String deviceUrl
+    );
+    /** ------------------------往消防平台添加巡检路线------------------------ **/
+    /**
+     * @title: 添加巡检路线 <tb>
+     * @params: base  url地址<tb>
+     * @params: FireInspection  对象json<tb>
+     */
+    @Request(
+            url = "${base}",
+            type = "post",
+            dataType = "json",
+            contentType = "application/json",
+            headers = {
+                    "Accept-Charset: utf-8",
+                    "Content-Type: application/json",
+                    "Cookie: ticket=0e52e10b7841430fb6d085832ce0f69a"
+            }
+    )
+    Object fireAddInspection(
+            @DataVariable("base") String base,
+            @DataObject FireInspection fireInspection
+    );
+
+
+    /**
+     * ------------------------往消防平台添加设备------------------------
+     **/
+    @Request(
+            url = "${base}?${params}",
+            type = "get",
+            headers = {
+                    "Accept-Charset: utf-8",
+                    "Cookie: ticket=0e52e10b7841430fb6d085832ce0f69a"
+            }
+    )
+    Object fireAddTroubleBak(
+            @DataVariable("base") String base,
+            @DataParam("params") String params //@DataVariable("params") String param
+    );
+
+    @Request(
+            url = "${base}/trouble/insertTrouble?type=${type}&levels=${levels}&dangerName=${dangerName}" +
+                    "&unitId=${unitId}&unitName=${unitName}&buildingId=${buildingId}&buildingName=${buildingName}" +
+                    "&floorId=${floorId}&floorNumber=${floorNumber}&roomId=${roomId}&roomNumber=${roomNumber}" +
+                    "&pointX=${pointX}&pointY=${pointY}&xRate=${xRate}&yRate=${yRate}" +
+                    "&cont=${cont}&gridId=${gridId}",
+            type = "get",
+            headers = {
+                    "Accept-Charset: utf-8",
+                    "Cookie: ticket=0e52e10b7841430fb6d085832ce0f69a"
+            },
+            dataType = "json"
+    )
+    Object fireAddTrouble(
+            @DataVariable("base") String base,
+            @DataVariable("type") Integer type,
+            @DataVariable("levels") Integer levels,
+            @DataVariable("dangerName") String dangerName,
+            @DataVariable("unitId") String unitId,
+            @DataVariable("unitName") String unitName,
+            @DataVariable("buildingId") String buildingId,
+            @DataVariable("buildingName") String buildingName,
+            @DataVariable("floorId") String floorId,
+            @DataVariable("floorNumber") String floorNumber,
+            @DataVariable("roomId") String roomId,
+            @DataVariable("roomNumber") String roomNumber,
+            @DataVariable("pointX") String pointX,
+            @DataVariable("pointY") String pointY,
+            @DataVariable("xRate") String xRate,
+            @DataVariable("yRate") String yRate,
+            @DataVariable("cont") String cont,
+            @DataVariable("gridId") String gridId
+    );
 }

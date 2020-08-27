@@ -27,7 +27,7 @@ public class WebListener implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        Map<String, Object> goods = jdbcTemplate.queryForMap("select * from goods_info where id = ?", 1);
+        Map<String, Object> goods = jdbcTemplate.queryForMap("select * from goods where id = ?", 1);
         String goodsId = goods.get("id").toString();
         String goodsStock = goods.get("stock").toString();
         redisTemplate.opsForValue().set(GOOD_KEY + goodsId,goodsStock);

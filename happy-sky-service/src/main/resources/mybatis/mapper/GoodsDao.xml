@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.happy.sky.dao.GoodsDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.happy.sky.entity.GoodsEntity" id="goodsMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="stock" column="stock"/>
+        <result property="version" column="version"/>
+    </resultMap>
+
+    <select id="queryGoodsByName" resultType="com.happy.sky.entity.GoodsEntity">
+		select * from goods where name = #{name}
+	</select>
+
+    <update id="updateByPrimaryKey" parameterType="com.happy.sky.entity.GoodsEntity">
+        update goods
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="stock != null">
+                stock = #{stock,jdbcType=INTEGER},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=INTEGER}
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+</mapper>

@@ -38,13 +38,17 @@ spring:
     host: localhost
     port: 6379
     password:    # 密码（默认为空）
-    timeout: 6000ms  # 连接超时时长（毫秒）
+    timeout: 6000  # 连接超时时长（毫秒）
     jedis:
       pool:
         max-active: 1000  # 连接池最大连接数（使用负值表示没有限制）
-        max-wait: -1ms      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1      # 连接池最大阻塞等待时间（使用负值表示没有限制）
         max-idle: 10      # 连接池中的最大空闲连接
         min-idle: 5       # 连接池中的最小空闲连接
+        test:
+          borrow: true
+          return: true
+
 #  redis:
 #    cluster:
 #      nodes: @redis.nodes@
@@ -58,7 +62,7 @@ forest:
   max-route-connections: 500 # 每个路由的最大连接数，默认值为500
   timeout: 3000 # 请求超时时间，单位为毫秒, 默认值为3000
   connect-timeout: 3000 # 连接超时时间，单位为毫秒, 默认值为2000
-  retry-count: 1 # 请求失败后重试次数，默认为0次不重试
+  retry-count: 0 # 请求失败后重试次数，默认为0次不重试
   ssl-protocol: SSLv3 # 单向验证的HTTPS的默认SSL协议，默认为SSLv3
   logEnabled: true # 打开或关闭日志，默认为true
   variables:  # 配置全局变量

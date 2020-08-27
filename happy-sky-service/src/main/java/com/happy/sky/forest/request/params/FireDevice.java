@@ -1,9 +1,9 @@
-package com.happy.sky.forest;
+package com.happy.sky.forest.request.params;
 
 
 import java.io.Serializable;
 
-public class FireDeviceParam implements Serializable{
+public class FireDevice implements Serializable{
     /** 设备名称 **/
     private String name;
 

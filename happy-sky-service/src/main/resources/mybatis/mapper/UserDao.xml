@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.happy.sky.dao.UserDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.happy.sky.entity.UserEntity" id="userMap">
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="nickname" column="nickname"/>
+        <result property="password" column="password"/>
+        <result property="salt" column="salt"/>
+        <result property="pic" column="pic"/>
+        <result property="birthday" column="birthday"/>
+        <result property="email" column="email"/>
+        <result property="height" column="height"/>
+        <result property="bloodType" column="blood_type"/>
+        <result property="mobile" column="mobile"/>
+        <result property="avatar" column="avatar"/>
+        <result property="remark" column="remark"/>
+        <result property="status" column="status"/>
+        <result property="online" column="online"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!--报警折线图 - 按小时统计 -->
+    <select id="queryUserLineChartByHours" parameterType="java.util.Map" resultType="java.util.Map">
+        select DATE_FORMAT(t.create_time,'%H') name, count(t.id) count
+        from tab_user t
+        where 1=1
+        <if test="status != null">
+            and t.status = #{status,jdbcType=Integer}
+        </if>
+        <if test="startTime != null and endTime != null">
+            and t.create_time <![CDATA[ >= ]]> #{startTime}
+            and t.create_time <![CDATA[ <= ]]> #{endTime}
+        </if>
+        group by  DATE_FORMAT(t.create_time,'%H')
+        order by name
+    </select>
+
+    <!--描    述：用户数据 - 按天统计 -->
+    <select id="queryUserLineChartByDays" parameterType="java.util.Map" resultType="java.util.Map">
+        select DATE_FORMAT(t.create_time,'%Y-%m-%d') name, count(t.id) count
+        from tab_user t
+        where 1=1
+        <if test="status != null">
+            and t.status = #{status,jdbcType=BIGINT}
+        </if>
+        <if test="startTime != null and endTime != null">
+            and t.create_time <![CDATA[ >= ]]> #{startTime}
+            and t.create_time <![CDATA[ <= ]]> #{endTime}
+        </if>
+        group by name
+        order by name
+    </select>
+
+    <!-- 描    述：用户数据 - 按周统计 -->
+    <select id="queryUserLineChartByWeeks" parameterType="java.util.Map" resultType="java.util.Map">
+        select DATE_FORMAT(t.create_time,'%Y-%u') name, count(t.id) count
+        from tab_user t
+        where 1=1
+        <if test="status != null">
+            and t.status = #{status,jdbcType=Integer}
+        </if>
+        <if test="startTime != null and endTime != null">
+            and t.create_time <![CDATA[ >= ]]> #{startTime}
+            and t.create_time <![CDATA[ <= ]]> #{endTime}
+        </if>
+        group by name
+        order by name
+    </select>
+
+    <!--描    述：用户数据 - 按月统计  -->
+    <select id="queryUserLineChartByMonths" parameterType="java.util.Map" resultType="java.util.Map">
+        select DATE_FORMAT(t.create_time,'%Y-%m') name, count(t.id) count
+        from tab_user t
+        where 1=1
+        <if test="status != null">
+            and t.status = #{status,jdbcType=Integer}
+        </if>
+        <if test="startTime != null and endTime != null">
+            and t.create_time <![CDATA[ >= ]]> #{startTime}
+            and t.create_time <![CDATA[ <= ]]> #{endTime}
+        </if>
+        group by name
+        order by name
+    </select>
+
+    <!--报警折线图   按年统计 -->
+    <select id="queryUserLineChartByYears" parameterType="java.util.Map" resultType="java.util.Map">
+        select DATE_FORMAT(t.create_time,'%Y') name, count(t.id) count
+        from tab_user t
+        where 1=1
+        <if test="status != null">
+            and t.status = #{status,jdbcType=Integer}
+        </if>
+        <if test="startTime != null and endTime != null">
+            and t.create_time <![CDATA[ >= ]]> #{startTime}
+            and t.create_time <![CDATA[ <= ]]> #{endTime}
+        </if>
+        group by name
+        order by name
+    </select>
+    
+</mapper>

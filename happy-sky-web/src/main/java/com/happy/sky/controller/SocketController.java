@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/socket")
-public class WebSocketController {
+public class SocketController {
 
     @MessageMapping("/welcome")
     @SendTo("/topic/getResponse")
