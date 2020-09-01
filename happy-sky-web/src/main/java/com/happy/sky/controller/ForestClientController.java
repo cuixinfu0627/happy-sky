@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -121,22 +122,57 @@ public class ForestClientController {
      * @title: 添加设备 <tb>
      * @params: projectId  <tb
      */
+    @GetMapping(value = "addBuilding")
+    public R addBuilding(@RequestParam(value = "prefix") String prefix,
+                         @RequestParam(value = "max") Integer max) {
+        String base = "http://api.fc-shaodong.zhxf.ltd";
+        for (int i = 2; i < max; i++) {
+            String strIndex = charStr[getRandomNumber(25, 0)];
+            String numIndex = charnumber[getRandomNumber(8, 0)];
+            String name = strIndex + numIndex + "栋";
+            String unitId = "9029";
+            String unitName = "数据管理单位";
+            String location = "后湖路" + getRandomNumber(600, 10) + "号";
+            String area = "";
+            String heightOfBuilding = "";
+            String floors = "23";
+            String structure = "混凝土结构";
+            String buildYear = "2014-01-01";
+            String property = "居住";
+            String linkname = "梁永辉";
+            String phone = "1569396116";
+            String pointX = "116.3610202562" + getRandomNumber(4); //随机后4位
+            String pointY = "40.07020874293" + getRandomNumber(4); //随机后4位
+            String headers = "{\"Content-Type\":\"application/json\"}";
+            Object obj = fireForestClient.fireAddBuilding(base, name, unitId, unitName, location, area, heightOfBuilding, floors, structure, buildYear, property, linkname, phone, pointX, pointY, headers);
+            String result = JSONHandler.getGson().toJson(obj);
+            logger.info("添加建筑返回结果：{}", result);
+        }
+        return R.ok("this is ok!");
+    }
+
+    /**
+     * @title: 添加设备 <tb>
+     * @params: projectId  <tb
+     */
     @GetMapping(value = "addDevice")
     public R addDevice(@RequestParam(value = "prefix") String prefix,
-                       @RequestParam(value = "max") Integer max) {
+                       @RequestParam(value = "max") Integer max) throws InterruptedException {
+        long start, end;
+        start = System.currentTimeMillis();
         String base = "http://api.fc-shaodong.zhxf.ltd";
-        for (int i = 1; i < 5; i++) {
-            String name = "燃气感应0" + i;
-            String unitId = "1";
-            String unitName = "管理单位";
+        for (int i = 1; i < max; i++) {
+            String name = "烟感";
+            String unitId = "9029";
+            String unitName = "数据管理单位";
             String buildingId = "0";
             String buildingName = "室外";
             String floorId = "";
             String floorNumber = "";
             String roomId = "";
             String roomNumber = "";
-            String deviceTypeId = "1";
-            String deviceTypeName = "燃气感应";
+            String deviceTypeId = "78";
+            String deviceTypeName = "点型光电感烟火灾探测器";
             String pointX = "116.3610202562" + getRandomNumber(4); //随机后4位
             String pointY = "40.07020874293" + getRandomNumber(4); //随机后4位
             String xRate = "";
@@ -168,14 +204,16 @@ public class ForestClientController {
 //                    + "&maintenanceUser=" + maintenanceUser + "&maintenancePhone=" + maintenancePhone
 //                    + "&controllerId=" + controllerId + "&modelCode=" + modelCode + "&deviceUrl=" + deviceUrl;
 //            Object obj = fireForestClient.fireAddDeviceBak(base, params);
-
+            Thread.sleep(500);
             Object obj = fireForestClient.fireAddDevice(base, name, unitId, unitName, buildingId, buildingName, floorId, floorNumber, roomId, roomNumber,
                     deviceTypeId, deviceTypeName, pointX, pointY, xRate, mac, startDate, height, fheight, lifeMonth, firm, productDate,
                     maintenanceUnit, maintenanceUser, maintenancePhone, controllerId, modelCode, deviceUrl);
             String result = JSONHandler.getGson().toJson(obj);
-            logger.info("添加设备返回结果：{}", result);
+            logger.info("InsertTotal:[{}],First:[{}],Response:{}", max, i, result);
         }
-        return R.ok("this is ok!");
+        end = System.currentTimeMillis();
+        System.out.println("total: " + max + " start time:" + start + "; end time:" + end + "; Run Time:" + (end - start) + "(ms)");
+        return R.ok("Add device total: " + max + "; Run Time:" + (end - start) + "(ms)");
     }
 
     /**
@@ -186,13 +224,15 @@ public class ForestClientController {
     public R addInspection(@RequestParam(value = "prefix") String prefix,
                            @RequestParam(value = "max") Integer max) {
         String url = "http://api.fc-shaodong.zhxf.ltd/admin/inspection/insertInspectionPlan";
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i < max; i++) {
             //组装数据
             FireInspection inspection = new FireInspection();
-            inspection.setName("智慧路线00" + i);    //路线随机
+            String strIndex = charStr[getRandomNumber(5, 0)];
+            String numIndex = charnumber[getRandomNumber(8, 0)] + charnumber[getRandomNumber(8, 0)];
+            inspection.setName("巡检路线" + strIndex + numIndex);    //路线随机
             inspection.setType(2);
-            inspection.setUnitId(1L);
-            inspection.setUnitName("管理单位");
+            inspection.setUnitId(9029L);
+            inspection.setUnitName("数据管理单位");
             List<FireInspectionNodes> listInspectionNodes = new ArrayList<>();
             for (int j = 0; j < 4; j++) {
                 FireInspectionNodes ispectionNodes = new FireInspectionNodes();
@@ -224,12 +264,12 @@ public class ForestClientController {
     public R addTrouble(@RequestParam(value = "prefix") String prefix,
                         @RequestParam(value = "max") Integer max) {
         String base = "http://api.fc-shaodong.zhxf.ltd";
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i < max; i++) {
             Integer type = getRandomNumber(4, 1);  //随机类型1-4
             Integer levels = getRandomNumber(3, 1); //随机级别1-3
             String dangerName = "";
-            String unitId = "1";
-            String unitName = "管理单位";
+            String unitId = "9029";
+            String unitName = "数据管理单位";
             String buildingId = "0";
             String buildingName = "室外";
             String floorId = "";
@@ -263,6 +303,10 @@ public class ForestClientController {
     }
 
     private static String charBaseStr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    private static String charStr[] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+
+    private static String charnumber[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
     /**
      * 随机字符串
@@ -318,13 +362,20 @@ public class ForestClientController {
         return vcode;
     }
 
+    /**
+     * 获取格式化当前时间、毫秒字符串
+     *
+     * @return
+     */
+    public static String getStrDateS() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SS");
+        Date currentTime = new Date();
+        String strDate = formatter.format(currentTime);
+        return strDate;
+    }
 
     public static void main(String[] args) {
         System.out.println("ForestClientController.main");
         System.out.println(System.currentTimeMillis());
-        System.out.println(getRandomString(14));
-        for (int i = 0; i < 5; i++) {
-            System.out.println("随机数字1-4:" + getRandomNumber(4, 1));
-        }
     }
 }

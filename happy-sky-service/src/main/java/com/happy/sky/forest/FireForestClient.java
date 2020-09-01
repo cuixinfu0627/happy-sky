@@ -99,20 +99,56 @@ public interface FireForestClient {
             @DataVariable("base") String base
     );
 
-    /** =========================== ===========================消防平台添加设备=========================== ===========================**/
+
+    /**
+     * =========================== ===========================消防平台添加建筑=========================== ===========================
+     **/
+    @Request(
+            url = "${base}/building/addBuilding?name=${name}&unitId=${unitId}&unitName=${unitName}&location=${location}&area=${area}" +
+                    "&heightOfBuilding=${heightOfBuilding}&floors=${floors}&structure=${structure}&buildYear=${buildYear}&property=${property}" +
+                    "&linkname=${linkname}&phone=${phone}&pointX=${pointX}&pointY=${pointY}&headers=${headers}",
+
+            type = "get",
+            headers = {
+                    "Accept-Charset: utf-8",
+                    "Cookie: ticket=e39a060b9d0d4155a041dcf7fffb1541"
+            },
+            dataType = "json"
+    )
+    Object fireAddBuilding(
+            @DataVariable("base") String base,
+            @DataVariable("name") String name,
+            @DataVariable("unitId") String unitId,
+            @DataVariable("unitName") String unitName,
+            @DataVariable("location") String location,
+            @DataVariable("area") String area,
+            @DataVariable("heightOfBuilding") String heightOfBuilding,
+            @DataVariable("floors") String floors,
+            @DataVariable("structure") String structure,
+            @DataVariable("buildYear") String buildYear,
+            @DataVariable("property") String property,
+            @DataVariable("linkname") String linkname,
+            @DataVariable("phone") String phone,
+            @DataVariable("pointX") String pointX,
+            @DataVariable("pointY") String pointY,
+            @DataVariable("headers") String headers
+    );
+
+    /**
+     * =========================== ===========================消防平台添加设备=========================== ===========================
+     **/
     @Request(
             url = "${base}/device/addDevice?${params}",
             type = "get",
             headers = {
                     "Accept-Charset: utf-8",
-                    "Cookie: ticket=0e52e10b7841430fb6d085832ce0f69a"
+                    "Cookie: ticket=e39a060b9d0d4155a041dcf7fffb1541"
             }
     )
     Object fireAddDeviceBak(
             @DataVariable("base") String base,
             @DataParam("params") String params //@DataVariable("params") String param
     );
-
     @Request(
             url = "${base}/device/addDevice?name=${name}&unitId=${unitId}&unitName=${unitName}&buildingId=${buildingId}&buildingName=${buildingName}" +
                     "&floorId=${floorId}&floorNumber=${floorNumber}&roomId=${roomId}&roomNumber=${roomNumber}&deviceTypeId=${deviceTypeId}&deviceTypeName=${deviceTypeName}" +
@@ -124,7 +160,7 @@ public interface FireForestClient {
             type = "get",
             headers = {
                     "Accept-Charset: utf-8",
-                    "Cookie: ticket=0e52e10b7841430fb6d085832ce0f69a"
+                    "Cookie: ticket=4ef21d91fb614793a58bb85b94e66082"
             },
             dataType = "json"
     )
@@ -172,7 +208,7 @@ public interface FireForestClient {
             headers = {
                     "Accept-Charset: utf-8",
                     "Content-Type: application/json",
-                    "Cookie: ticket=0e52e10b7841430fb6d085832ce0f69a"
+                    "Cookie: ticket=4ef21d91fb614793a58bb85b94e66082"
             }
     )
     Object fireAddInspection(
@@ -189,7 +225,7 @@ public interface FireForestClient {
             type = "get",
             headers = {
                     "Accept-Charset: utf-8",
-                    "Cookie: ticket=0e52e10b7841430fb6d085832ce0f69a"
+                    "Cookie: ticket=4ef21d91fb614793a58bb85b94e66082"
             }
     )
     Object fireAddTroubleBak(
@@ -206,7 +242,7 @@ public interface FireForestClient {
             type = "get",
             headers = {
                     "Accept-Charset: utf-8",
-                    "Cookie: ticket=0e52e10b7841430fb6d085832ce0f69a"
+                    "Cookie: ticket=4ef21d91fb614793a58bb85b94e66082"
             },
             dataType = "json"
     )
