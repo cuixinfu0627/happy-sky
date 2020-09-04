@@ -66,5 +66,13 @@ mybatis-plus:
     call-setters-on-nulls: true
     jdbc-type-for-null: 'null'
 
+#FTP上传文件配置
+ftp:
+  host: ftp.xf-admin.zhxf.ltd
+  username: static_uploader
+  password : 0pfTaaoU4wa0TJ5lGWG5
+  port: 21
+  rootDir: sky/
+
 logging:
   config: classpath:logback.xml
