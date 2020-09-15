@@ -19,7 +19,14 @@ import java.util.Map;
 public class SkyController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SkyController.class);
-	
+
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public ModelAndView welcome(HttpServletRequest request, HttpServletResponse response){
+		ModelAndView mv = new ModelAndView("forward:/sky/welcome.json");//默认为forward模式
+		//ModelAndView mv = new ModelAndView("redirect:/#/sky/welcome.json");//redirect模式
+		return mv;
+	}
+
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
 		ModelAndView mv = new ModelAndView("forward:/sky/welcome.json");//默认为forward模式

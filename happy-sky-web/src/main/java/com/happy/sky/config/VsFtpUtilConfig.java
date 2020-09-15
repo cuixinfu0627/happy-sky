@@ -1,17 +1,8 @@
 package com.happy.sky.config;
 
-import com.happy.sky.common.utils.FileUploadParam;
-import com.happy.sky.validator.RRException;
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPFile;
-import org.apache.commons.net.ftp.FTPReply;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.IOException;
 
 /**
  * @name: VsftpUtilConfig <tb>
@@ -22,7 +13,7 @@ import java.io.*;
 @Component
 public class VsFtpUtilConfig {
 
-    private static Logger logger = LoggerFactory.getLogger(VsFtpUtilConfig.class);
+   /* private static Logger logger = LoggerFactory.getLogger(VsFtpUtilConfig.class);
 
     //通过properties文件自动注入
     @Value("${ftp.host}")
@@ -96,12 +87,12 @@ public class VsFtpUtilConfig {
         }
     }
 
-    /**
+    *//**
      * @param path     上传文件存放在服务器的路径
      * @param filename 上传文件名
      * @param input    输入流
      * @return
-     */
+     *//*
     public boolean fileUpload(String path, String filename, InputStream input) {
         FTPClient ftp = new FTPClient();
         try {
@@ -170,11 +161,11 @@ public class VsFtpUtilConfig {
         return false;
     }
 
-    /**
+    *//**
      * @param filename  文件名，注意！此处文件名为加路径文件名，如：/2015/06/04/aa.jpg
      * @param localPath 存放到本地第地址
      * @return
-     */
+     *//*
     public boolean downloadFile(String filename, String localPath) {
         FTPClient ftp = new FTPClient();
         try {
@@ -272,12 +263,12 @@ public class VsFtpUtilConfig {
         }
     }
 
-    /**
+    *//**
      * @param ftp
      * @param basePath
      * @param path     以path为根，递归清除上面所有空的文件夹，直到出现不为空的文件夹停止，最多清除到basePath结束
      * @throws IOException
-     */
+     *//*
     private void clearDirectory(FTPClient ftp, String basePath, String path) throws IOException {
         //如果路径长度小于2，说明到顶了
         if (path.length() < 2) {
@@ -318,15 +309,15 @@ public class VsFtpUtilConfig {
         }
 
         //下载测试--------------------------------------
-        /*String filename="/2015/06/04/aa.jpg";
+        *//*String filename="/2015/06/04/aa.jpg";
         String localPath="F:\\";
         VsFtpUtilConfig ftputil=new VsFtpUtilConfig();
-        ftputil.downloadFile(filename, localPath);*/
+        ftputil.downloadFile(filename, localPath);*//*
 
         //删除测试--------------------------------------
-         /*VsFtpUtilConfig ftputil = new VsFtpUtilConfig();
+         *//*VsFtpUtilConfig ftputil = new VsFtpUtilConfig();
         boolean flag = ftputil.deleteFile("/2015/06/04/va.jpg");
-        System.out.println(flag);*/
+        System.out.println(flag);*//*
     }
 
     public String getHost() {
@@ -428,5 +419,5 @@ public class VsFtpUtilConfig {
                 }
             }
         }
-    }
+    }*/
 }
