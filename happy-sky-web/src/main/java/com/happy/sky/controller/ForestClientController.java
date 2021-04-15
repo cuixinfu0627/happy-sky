@@ -377,5 +377,6 @@ public class ForestClientController {
     public static void main(String[] args) {
         System.out.println("ForestClientController.main");
         System.out.println(System.currentTimeMillis());
+        System.out.println(getRandomString(6));
     }
 }
