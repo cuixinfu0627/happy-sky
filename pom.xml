@@ -25,6 +25,7 @@
         <module>happy-sky-common</module>
         <module>happy-sky-service</module>
         <module>happy-sky-web</module>
+        <module>happy-sky-design</module>
     </modules>
 
     <properties>
